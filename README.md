@@ -1,1 +1,1 @@
-# gorbyoyo-translator
+# Gorbyoyo Translator
