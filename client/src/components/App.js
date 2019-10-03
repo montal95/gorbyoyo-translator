@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Header from "./Header";
 import Form from "./Form";
+import Results from "./Results";
 
 export default class App extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class App extends Component {
     this.toGorbyoyo = this.toGorbyoyo.bind(this);
     this.state = {
       value: "",
+      english: "",
       dorbdorb: [],
       gorbyoyo: [],
       concatGorbyoyo: ""
@@ -27,7 +29,10 @@ export default class App extends Component {
     //prevents empty form submit
     e.preventDefault();
     //resets input form to blank after click
-    this.setState({ value: "" });
+    this.setState({
+      english: `${this.state.value}`,
+      value: ""
+    });
     //translates input value into Dorbdorb
     await this.toDorbdorb(`${this.state.value}`);
     //translates input value into Gorbyoyo
@@ -64,22 +69,28 @@ export default class App extends Component {
     //loops through each key and assigns them to 3 temporary variables
     for (let i = 0; i < arr.length; i++) {
       let newChar = arr[i].split("");
-      num1 = newChar[0] + newChar[1] + newChar[2];
+      num1 = newChar[0] + newChar[1];
       char = newChar[3];
-      num2 = newChar[4] + newChar[5] + newChar[6];
+      num2 = newChar[5] + newChar[6];
       //creates the new Gorbyoyo character
       char = `${char}yo${parseInt(num1) + parseInt(num2)}`;
       //places new Gorbyoyo character into temporary array
       newArr = [...newArr, char];
     }
+    newArr.join("");
     //places array into state
     this.setState({
       gorbyoyo: newArr
     });
   };
 
+  gorbValidate = str => {};
+
   render() {
     const value = this.state.value;
+    const english = this.state.english;
+    const dorbdorb = this.state.dorbdorb;
+    const gorbyoyo = this.state.gorbyoyo;
 
     return (
       <div className="container">
@@ -89,6 +100,7 @@ export default class App extends Component {
           onClick={this.handleSubmit}
           handleChange={this.handleChange}
         />
+        <Results english={english} dorbdorb={dorbdorb} gorbyoyo={gorbyoyo} />
       </div>
     );
   }

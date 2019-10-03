@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const keys = require('./config/keys');
 const bodyParser = require('body-parser');
 const app = express();
 
@@ -8,6 +9,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
+
+//mongoose setup
+mongoose.connect(keys.mongoURI);
 
 if (process.env.NODE_ENV === "production") {
   // Express will serve production assets
@@ -21,5 +25,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT);
