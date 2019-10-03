@@ -4,66 +4,19 @@ export default class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
-      dorbdorb: [],
-      gorbyoyo: []
+      value: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  //this is used to hoist the input value into the parent component
   handleChange(e) {
-    //this converts the characters in the string to lower case
-    this.setState({ value: e.target.value.toLowerCase() });
-    console.log(this.state.value);
+    this.props.handleChange(e.target.value);
   }
-
-  handleSubmit = async e => {
-    this.toDorbdorb(`${this.state.value}`);
-    this.toGorbyoyo();
-    e.preventDefault();
-  };
-
-  toDorbdorb = async str => {
-    console.log("hit dorbdorb");
-    try {
-      let response = await fetch(
-        "https://72exx40653.execute-api.us-east-1.amazonaws.com/prod/translateEnglishToAlien",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            textToTranslate: `${this.state.value}`
-          })
-        }
-      );
-      let responseJSON = await response.json();
-      console.log(responseJSON);
-      return this.setState({
-        dorbdorb: responseJSON
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  toGorbyoyo = () => {
-    this.state.dorbdorb.forEach(key => {
-      let num1, num2, newKey;
-      key.split("").forEach(char => {
-        if (typeof char === "string") {
-          return (newKey = char);
-        }
-        if (!newKey) {
-          return (num1 = char);
-        }
-        return (num2 = char);
-      });
-      key = `${newKey}yo${num1+num2}`
-    });
-  };
 
   render() {
+    const value = this.props.value;
     return (
       <div className="row">
         <form className="col s12 blue darken-3">
@@ -75,7 +28,7 @@ export default class Form extends Component {
                 type="text"
                 pattern="[a-zA-z ]+"
                 className="validate white-text"
-                value={this.state.value}
+                value={value}
                 onChange={this.handleChange}
               />
               <label className="active white-text" htmlFor="english-phrase">
@@ -84,7 +37,7 @@ export default class Form extends Component {
               <button
                 className="btn waves-effect waves-light indigo darken-3"
                 type="button"
-                onClick={this.handleSubmit}
+                onClick={this.props.onClick}
               >
                 Submit
                 <i className="material-icons right medium">compare_arrows</i>
