@@ -7,7 +7,7 @@
 3. Run 'yarn install' in the client directory
 4. use 'npm run dev' to run the front and back end of the application
 
-##Dependencies
+## Dependencies
 
 Axios - for api routing
 Body-parser - to help pass information between the front and back end
