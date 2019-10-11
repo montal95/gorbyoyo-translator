@@ -4,9 +4,14 @@ export class Results extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
+    const styleDisplay = {
+      display : `${this.props.display}`
+    };
+
     return (
-      <div id="results">
+      <div id="results" style={styleDisplay}>
         <table className="responsive-table centered">
           <thead>
             <tr className="blue lighten-4">

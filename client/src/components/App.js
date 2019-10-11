@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Header from "./Header";
 import Form from "./Form";
 import Results from "./Results";
+import HistoryList from "./HistoryList";
+import HistoryItem from "./HistoryItem";
 
 export default class App extends Component {
   constructor(props) {
@@ -15,7 +17,9 @@ export default class App extends Component {
       english: "",
       dorbdorb: [],
       gorbyoyo: [],
-      concatGorbyoyo: ""
+      concatGorbyoyo: "",
+      displayAccepted: "none",
+      history: []
     };
   }
 
@@ -37,6 +41,8 @@ export default class App extends Component {
     await this.toDorbdorb(`${this.state.value}`);
     //translates input value into Gorbyoyo
     await this.toGorbyoyo(this.state.dorbdorb);
+    //validates Gorbyoyo translation. Displays translations if correct
+    await this.gorbValidate(this.state.gorbyoyo);
   };
 
   toDorbdorb = async str => {
@@ -84,13 +90,43 @@ export default class App extends Component {
     });
   };
 
-  gorbValidate = str => {};
+  gorbValidate = async str => {
+    //takes the string and checks if it is a valid translation of gorbyoyo
+    // try {
+    //   let res = await fetch(
+    //     "https://72exx40653.execute-api.us-east-1.amazonaws.com/prod/confirmtranslation",
+    //     {
+    //       method: "POST",
+    //       body: JSON.stringify({
+    //         textToVerify: `${this.state.gorbyoyo}`
+    //       })
+    //     }
+    //   );
+    //   //converts response into a string
+    //   let resJSON = await res.json();
+    //   console.log("hit the validate");
+    //   //if the translation is accepted
+    //   //if (resJSON !== "Invalid Translation") {
+    //     //the display component is shown
+    //     //this.setState({
+    //     //   displayAccepted: "block"
+    //     // });
+    //   //}
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    //normal function is commented out due to issue with API
+    this.setState({
+      displayAccepted: "block"
+    });
+  };
 
   render() {
     const value = this.state.value;
     const english = this.state.english;
     const dorbdorb = this.state.dorbdorb;
     const gorbyoyo = this.state.gorbyoyo;
+    const display = this.state.displayAccepted;
 
     return (
       <div className="container">
@@ -100,7 +136,17 @@ export default class App extends Component {
           onClick={this.handleSubmit}
           handleChange={this.handleChange}
         />
-        <Results english={english} dorbdorb={dorbdorb} gorbyoyo={gorbyoyo} />
+        <Results
+          english={english}
+          dorbdorb={dorbdorb}
+          gorbyoyo={gorbyoyo}
+          display={display}
+        />
+        <HistoryList>
+          <HistoryItem>
+            
+          </HistoryItem>
+        </HistoryList>
       </div>
     );
   }
